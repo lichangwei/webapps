@@ -1,0 +1,115 @@
+html{
+  -webkit-tap-highlight-color: transparent; 
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+html, body, div, ul, li, h1, h4, span{
+  padding: 0;
+  margin: 0;
+}
+#box {
+  width: 640px;
+  height: 480px;
+  color: #fff;
+  overflow: hidden;
+  background: #2340b7;
+}
+.title{
+  height: 60px;
+  background: #091b76;
+}
+.title > h1{
+  float: left;
+  padding: 0 20px;
+  font-size: 28px;
+  line-height: 60px;
+}
+.title > .back{
+  float: right;
+  width: 30px;
+  height: 100%;
+  background: url(../images/back.png) 0 13px no-repeat;
+}
+.title > .item{
+  float: right;
+  margin-right: 20px;
+  width: 20px;
+  height: 100%;
+  background: url(../images/item.png) 0 2px no-repeat;
+}
+.main{
+  position: relative;
+  height: 420px;
+}
+.content{
+  width: 490px;
+  height: 420px;
+}
+.content h4{
+  padding: 20px;
+  font-size: 24px;
+}
+.content p{
+  padding: 0 20px;
+  font-size: 20px;
+}
+.menu{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 420px;
+  background: url(../images/s_16_dd_parts_menu_mode_modedialbase_c2.png) right top no-repeat;
+  overflow: hidden;
+}
+.guide{
+  position: absolute;
+  width: 39px;
+  height: 420px;
+  background: url(../images/s_16_dd_parts_menu_mode_ellipsoid_c2.png) center center no-repeat;
+  background-size: 22px 20px;
+}
+.menu ul{
+  position: relative;
+  top: -35px;
+  left: 378px;
+  width: 490px;
+  height: 490px;
+  list-style: none;
+  float: right;
+}
+.menu li{
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 60px 80px;
+}
+.menu .mode_p{
+  background-image: url(../images/modedialicon_p.png);
+}
+.menu .mode_a{
+  background-image: url(../images/modedialicon_a.png);
+}
+.menu .mode_s{
+  background-image: url(../images/modedialicon_s.png);
+}
+.menu .mode_m{
+  background-image: url(../images/modedialicon_m.png);
+}
+.menu .mode_sweeppanorama{
+  background-image: url(../images/modedialicon_sweeppanorama.png);
+}
+.menu .mode_scene{
+  background-image: url(../images/modedialicon_scene.png);
+}
+.menu .mode_iauto{
+  background-image: url(../images/modedialicon_iauto.png);
+}
+.menu .mode_iautoplus{
+  background-image: url(../images/modedialicon_iautoplus.png);
+}
