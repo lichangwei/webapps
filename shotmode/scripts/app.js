@@ -2,7 +2,7 @@
 
 var r = 195;
 var unitDeg = 22.5;
-var mode = document.querySelector('.mode');
+var mode = document.querySelector('.menu ul');
 
 function drawModes(){
   var classes= ['p', 'a', 's', 'm', 'sweeppanorama', 'scene', 'iauto', 'iautoplus'];
@@ -17,13 +17,13 @@ function drawModes(){
 }
 
 function getPageY(e){
-  return e.pageY || e.clientY || 
+  return e.pageY || e.clientY ||
   (e.touches && e.touches[0] ? e.touches[0].pageY : 0) ||
   (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].pageY : 0);
 }
 
 function getPageX(e){
-  return e.pageX || e.clientX || 
+  return e.pageX || e.clientX ||
   (e.touches && e.touches[0] ? e.touches[0].pageX : 0) ||
   (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].pageX : 0);
 }
@@ -32,19 +32,25 @@ window.onload = function(){
   drawModes();
   var menu = document.querySelector('.menu');
 
-  function dragstart(e){
-    e.preventDefault();
+  function getRotation(){
     var base = 0;
     var match = /rotate\((-?[\d\.]+)deg\)/.exec(mode.style.WebkitTransform);
     if( match ){
-      base = parseInt(match[1], 10);
+      base = parseFloat(match[1]);
     }
+    return base;
+  }
+
+  function applyChange(deg){
+    mode.style.WebkitTransform = 'rotate(' + deg + 'deg)';
+  }
+
+  function dragstart(e){
+    e.preventDefault();
+    var base = getRotation();
     var startDeg = Math.atan2(getPageY(e), getPageX(e));
     var deg = 0;
-
-    function applyChange(deg){
-      mode.style.WebkitTransform = 'rotate(' + deg + 'deg)';
-    }
+    mode.className = '';
 
     function dragmove(e){
       var endDeg = Math.atan2(getPageY(e), getPageX(e));
@@ -56,6 +62,7 @@ window.onload = function(){
         deg = Math.round(deg / unitDeg) * unitDeg;
         applyChange(deg);
       }
+      mode.className = 'transition';
       menu.removeEventListener('mousemove', dragmove);
       menu.removeEventListener('touchmove', dragmove);
       menu.removeEventListener('mouseup', dragend);
@@ -68,6 +75,17 @@ window.onload = function(){
   }
   menu.addEventListener('mousedown', dragstart, false);
   menu.addEventListener('touchstart', dragstart, false);
+
+  document.addEventListener('keydown', function(e){
+    var angle = getRotation();
+    console.log(angle)
+    if(e.keyCode === 37 || e.keyCode === 38){
+      angle += unitDeg;
+    }else if(e.keyCode === 39 || e.keyCode === 40){
+      angle -= unitDeg;
+    }
+    applyChange(angle);
+  }, false);
 };
 
 

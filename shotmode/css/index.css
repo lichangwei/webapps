@@ -81,6 +81,9 @@ html, body, div, ul, li, h1, h4, span{
   list-style: none;
   float: right;
 }
+.menu ul.transition{
+  -webkit-transition: -webkit-transform 300ms linear;
+}
 .menu li{
   position: absolute;
   width: 80px;
