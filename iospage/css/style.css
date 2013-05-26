@@ -1,0 +1,126 @@
+
+html, body{
+  -webkit-user-select: none;
+          user-select: none;
+  background: #666;
+  overflow: hidden;
+}
+html, body, ul, p{
+  margin: 0;
+  padding: 0;
+}
+ul{
+  list-style: none;
+}
+html, body, #container, #pages, #pages li{
+  width: 100%;
+  height: 100%;
+}
+#container{
+  position: relative;
+  overflow: hidden;
+}
+.transition{
+  -webkit-transition: left 0.3s linear;
+          transition: left 0.3s linear;
+}
+#pages{
+  position: relative;
+  width: 1000%;
+}
+#pages li{
+  position: relative;
+  float: left;
+  width: 10%;
+  background-image: url(../images/sweat.jpg);
+  background-size: 100% 100%;
+  overflow: hidden;
+}
+#pages li:after{
+  display: block;
+  height: 0;
+  content: '';
+  clear: left;
+}
+.item{
+  position: relative;
+  display: inline-block;
+  width: 25%;
+  height: 20%;
+  padding-top: 4%;
+  padding-bottom: 1%;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  line-height: 20px;
+}
+.icon{
+  position: relative;
+  display: inline-block;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+.icon .image{
+  font-size: 44px;
+  line-height: 55px;
+}
+.icon .title{
+  margin-top: 5px;
+  height: 20px;
+  white-space: nowrap;
+}
+.shake .item{
+  -webkit-animation: shake 0.3s linear 0s infinite;
+}
+.shake .icon:before{
+  position: absolute;
+  display: block;
+  top: -5px;
+  width: 20px;
+  height: 20px;
+  content: '✕';
+  border: 2px solid #FFF;
+  border-radius: 12px;
+  background: #000;
+}
+@-webkit-keyframes shake {
+  0%, 50%, 100% { -webkit-transform: rotate(0deg); }
+  25% { -webkit-transform: rotate(3deg); }
+  75% { -webkit-transform: rotate(-3deg); }
+}
+#links{
+  position: relative;
+  top: -20px;
+  text-align: center;
+}
+#links li{
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.3);
+  -webkit-transition: background-color 0.3s linear;
+}
+#links li.current{
+  background-color: rgba(255, 255, 255, 1);
+}
+
+@media only screen and (max-device-width: 640px) and (orientation:landscape){
+  .item{
+    width: 16.66%;
+    padding-top: 4%;
+  }
+}
+@media only screen and (min-device-width: 641px){
+  .item{
+    padding-top: 3%;
+    padding-bottom: 0;
+  }
+  #pages li{
+    background-image: url(../images/bg.jpeg);
+    background-size: auto;
+    background-repeat: repeat;
+  }
+}
