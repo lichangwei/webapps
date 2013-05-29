@@ -99,18 +99,18 @@ g(elemLinks).on('tap', 'li', function(e){
 var gElemPages = g(elemPages);
 
 gElemPages.on('tap', '.icon', function(e){
-  alert(this.className);
+  //alert(this.className);
 }).on('taphold', '.icon', function(e){
   if(!isShake){
     document.body.className = 'shake';
-    bindDragAndDropEvent();
+    setTimeout(bindDragAndDropEvent, 0);
     isShake = true;
   }
 }).doubletap(function(){
   if(isShake){
     document.body.className = '';
     isShake = false;
-    unbindDragAndDropEvent();
+    setTimeout(unbindDragAndDropEvent, 0);
   }
 });
 
@@ -133,22 +133,14 @@ gElemPages.swipestart(function(e){
   elemPages.className = 'transition';
 });
 
-
 function bindDragAndDropEvent(){
   gElemPages.on('dragstart.dd', '.icon', function(e){
     e.dataTransfer.setData('dragElem', this);
     isDrag = true;
-
   }).on('drag.dd', '.icon', function(e){
     // do nothing
   }).on('dragend.dd', '.icon', function(e){
-    var dragElem = e.dataTransfer.getData('dragElem');
-    var dropElem = e.dataTransfer.getData('dropElem');
-    if(dragElem){
-      dragElem.style.cssText = '';
-    }
-    isDrag = false;
-
+    // do nothing
   }).on('dragenter.dd', '.icon', function(e){
     // do nothing
   }).on('dragover.dd', '.icon', function(e){
@@ -160,14 +152,16 @@ function bindDragAndDropEvent(){
     var dropElem = this;
     var dragIndex = dragElem.getAttribute('appindex');
     var dropIndex = dropElem.getAttribute('appindex');
-    if(dragIndex === dropIndex) return;
-    e.dataTransfer.setData('dropElem', dropElem);
-    // exchange dragElem and dropElem
-    var dragParent = dragElem.parentNode;
-    dropElem.parentNode.appendChild(dragElem);
-    dragParent.appendChild(dropElem);
-    dragElem.setAttribute('appindex', dropIndex);
-    dropElem.setAttribute('appindex', dragIndex);
+    if(dragIndex !== dropIndex){
+      // exchange dragElem and dropElem
+      var dragParent = dragElem.parentNode;
+      dropElem.parentNode.appendChild(dragElem);
+      dragParent.appendChild(dropElem);
+      dragElem.setAttribute('appindex', dropIndex);
+      dropElem.setAttribute('appindex', dragIndex);
+    }
+    dragElem.style.cssText = '';
+    isDrag = false;
   });
 }
 
