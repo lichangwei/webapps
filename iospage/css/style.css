@@ -66,9 +66,11 @@ html, body, #container, #pages, #pages li{
   line-height: 55px;
 }
 .icon .title{
+  max-width: 66px;
   margin-top: 5px;
   height: 20px;
   white-space: nowrap;
+  overflow: hidden;
 }
 .shake .item{
   -webkit-animation: shake 0.3s linear 0s infinite;

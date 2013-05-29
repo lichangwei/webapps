@@ -150,6 +150,12 @@ function bindDragAndDropEvent(){
     isDrag = false;
 
   }).on('dragenter.dd', '.icon', function(e){
+    // do nothing
+  }).on('dragover.dd', '.icon', function(e){
+    // do nothing
+  }).on('dragleave.dd', '.icon', function(e){
+    // do nothing
+  }).on('drop.dd', '.icon', function(e){
     var dragElem = e.dataTransfer.getData('dragElem');
     var dropElem = this;
     var dragIndex = dragElem.getAttribute('appindex');
@@ -162,15 +168,6 @@ function bindDragAndDropEvent(){
     dragParent.appendChild(dropElem);
     dragElem.setAttribute('appindex', dropIndex);
     dropElem.setAttribute('appindex', dragIndex);
-
-  }).on('dragover.dd', '.icon', function(e){
-    // do nothing
-  }).on('dragleave.dd', '.icon', function(e){
-    e.dataTransfer.setData('dropElem', null);
-    var dragElem = e.dataTransfer.getData('dragElem');
-
-  }).on('drop.dd', '.icon', function(e){
-    // do nothing
   });
 }
 
