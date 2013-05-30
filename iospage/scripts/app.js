@@ -148,6 +148,7 @@ function bindDragAndDropEvent(){
   }).on('dragleave.dd', '.icon', function(e){
     // do nothing
   }).on('drop.dd', '.icon', function(e){
+    e.preventDefault();
     var dragElem = e.dataTransfer.getData('dragElem');
     var dropElem = this;
     var dragIndex = dragElem.getAttribute('appindex');
@@ -160,7 +161,6 @@ function bindDragAndDropEvent(){
       dragElem.setAttribute('appindex', dropIndex);
       dropElem.setAttribute('appindex', dragIndex);
     }
-    dragElem.style.cssText = '';
     isDrag = false;
   });
 }
