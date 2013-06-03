@@ -86,6 +86,9 @@ var elemNumbs = elemLinks.children;
 var left;
 var isShake = false;
 var isDrag = false;
+var LastPaginationTime = +new Date();
+var dragEdge = parseInt(pageWidth * 0.05, 10);
+dragEdge = Math.max(dragEdge, 30);
 
 
 var temp = dt(elemContainer);
@@ -138,7 +141,20 @@ function bindDragAndDropEvent(){
     e.dataTransfer.setData('dragElem', this);
     isDrag = true;
   }).on('drag.dd', '.icon', function(e){
-    // do nothing
+    var now = + new Date();
+    if(now - LastPaginationTime > 2000){
+      var x = g.util.getPageX(e);
+      var change = 0;
+      if(x < dragEdge && currentPage > 0){
+        change = -1;
+      }else if(x + dragEdge > pageWidth && currentPage < pageNumber){
+        change = 1;
+      }
+      if(change){
+        gotoPage(currentPage + change);
+        LastPaginationTime = now;
+      }
+    }
   }).on('dragend.dd', '.icon', function(e){
     // do nothing
   }).on('dragenter.dd', '.icon', function(e){
