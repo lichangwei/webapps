@@ -16,21 +16,37 @@ function drawModes(){
   mode.innerHTML = html;
 }
 
-function getPageY(e){
-  return e.pageY || e.clientY ||
-  (e.touches && e.touches[0] ? e.touches[0].pageY : 0) ||
-  (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].pageY : 0);
-}
-
-function getPageX(e){
-  return e.pageX || e.clientX ||
-  (e.touches && e.touches[0] ? e.touches[0].pageX : 0) ||
-  (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].pageX : 0);
-}
 
 window.onload = function(){
   drawModes();
-  var menu = document.querySelector('.menu');
+
+  var base, startDeg, deg;
+  g('.menu').swipestart(function(e){
+    base = getRotation();
+    startDeg = Math.atan2(e.pageY, e.pageX);
+    deg = 0;
+    mode.className = '';
+  }).swipe(function(e){
+    var endDeg = Math.atan2(e.pageY, e.pageX);
+    deg = base + (startDeg - endDeg) * 5 / Math.PI * 180;
+    applyChange(deg);
+  }).swipeend(function(e){
+    if(deg !== 0){
+      deg = Math.round(deg / unitDeg) * unitDeg;
+      applyChange(deg);
+    }
+    mode.className = 'transition';
+  });
+
+  document.addEventListener('keydown', function(e){
+    var angle = getRotation();
+    if(e.keyCode === 37 || e.keyCode === 38){
+      angle += unitDeg;
+    }else if(e.keyCode === 39 || e.keyCode === 40){
+      angle -= unitDeg;
+    }
+    applyChange(angle);
+  }, false);
 
   function getRotation(){
     var base = 0;
@@ -44,49 +60,6 @@ window.onload = function(){
   function applyChange(deg){
     mode.style.WebkitTransform = 'rotate(' + deg + 'deg)';
   }
-
-  function dragstart(e){
-    e.preventDefault();
-    var base = getRotation();
-    var startDeg = Math.atan2(getPageY(e), getPageX(e));
-    var deg = 0;
-    mode.className = '';
-
-    function dragmove(e){
-      var endDeg = Math.atan2(getPageY(e), getPageX(e));
-      deg = base + (startDeg - endDeg) * 5 / Math.PI * 180;
-      applyChange(deg);
-    }
-    function dragend(){
-      if(deg !== 0){
-        deg = Math.round(deg / unitDeg) * unitDeg;
-        applyChange(deg);
-      }
-      mode.className = 'transition';
-      menu.removeEventListener('mousemove', dragmove);
-      menu.removeEventListener('touchmove', dragmove);
-      menu.removeEventListener('mouseup', dragend);
-      menu.removeEventListener('touchend', dragend);
-    }
-    menu.addEventListener('mousemove', dragmove, false);
-    menu.addEventListener('touchmove', dragmove, false);
-    menu.addEventListener('mouseup', dragend, false);
-    menu.addEventListener('touchend', dragend, false);
-  }
-  menu.addEventListener('mousedown', dragstart, false);
-  menu.addEventListener('touchstart', dragstart, false);
-
-  document.addEventListener('keydown', function(e){
-    var angle = getRotation();
-    console.log(angle)
-    if(e.keyCode === 37 || e.keyCode === 38){
-      angle += unitDeg;
-    }else if(e.keyCode === 39 || e.keyCode === 40){
-      angle -= unitDeg;
-    }
-    applyChange(angle);
-  }, false);
 };
-
 
 })();

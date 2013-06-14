@@ -105,14 +105,14 @@ gElemPages.on('tap', '.icon', function(e){
   //alert(this.className);
 }).on('taphold', '.icon', function(e){
   if(!isShake){
-    document.body.className = 'shake';
     setTimeout(bindDragAndDropEvent, 0);
     isShake = true;
+    toggleShake(isShake);
   }
 }).doubletap(function(){
   if(isShake){
-    document.body.className = '';
     isShake = false;
+    toggleShake(isShake);
     setTimeout(unbindDragAndDropEvent, 0);
   }
 });
@@ -121,6 +121,7 @@ gElemPages.swipestart(function(e){
   if(isDrag) return;
   elemPages.className = '';
   left = parseInt(elemPages.style.left, 10) || 0;
+  toggleShake(false);
 }).swipe(function(e){
   if(isDrag) return;
   elemPages.style.left = left + e.deltaX + 'px';
@@ -132,14 +133,16 @@ gElemPages.swipestart(function(e){
   if(absSpeed > 1000 && absX > 200 || absX > pageWidth / 3){
      page = e.deltaX > 0 ? -1 : 1;
   }
-  gotoPage(currentPage + page);
+  toggleShake(isShake);
   elemPages.className = 'transition';
+  gotoPage(currentPage + page);
 });
 
 function bindDragAndDropEvent(){
   gElemPages.on('dragstart.dd', '.icon', function(e){
     e.dataTransfer.setData('dragElem', this);
     isDrag = true;
+    toggleShake(false);
   }).on('drag.dd', '.icon', function(e){
     var now = + new Date();
     if(now - LastPaginationTime > 2000){
@@ -156,6 +159,7 @@ function bindDragAndDropEvent(){
       }
     }
   }).on('dragend.dd', '.icon', function(e){
+    toggleShake(isShake);
     // do nothing
   }).on('dragenter.dd', '.icon', function(e){
     // do nothing
@@ -196,10 +200,23 @@ window.onorientationchange = function(){
 function gotoPage(pageIndex){
   if(pageIndex < 0) pageIndex = 0;
   if(pageIndex >= pageNumber) pageIndex = pageNumber - 1;
-  elemNumbs[currentPage].className = '';
-  currentPage = pageIndex;
-  elemPages.style.left = '-' + pageWidth * currentPage + 'px';
-  elemNumbs[currentPage].className = 'current';
+  var left = -1 * pageWidth * pageIndex;
+  var currentLeft = elemPages.getBoundingClientRect().left;
+  if(left !== currentLeft){
+    elemNumbs[currentPage].className = '';
+    currentPage = pageIndex;
+    elemNumbs[currentPage].className = 'current';
+    elemPages.style.left = left + 'px';
+    toggleShake(false);
+  }
+}
+g.enableNativeEvent('transitionend', 'webkitTransitionEnd');
+gElemPages.transitionend(function(e){
+  toggleShake(isShake);
+});
+
+function toggleShake(shake){
+  document.body.className = shake ? 'shake' : '';
 }
 
 window.onorientationchange();
