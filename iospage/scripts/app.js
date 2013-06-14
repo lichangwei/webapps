@@ -194,8 +194,8 @@ function gotoPage(pageIndex){
     toggleShake(false);
   }
 }
-g.alias('transitionend', 'webkitTransitionEnd');
-gElemPages.on('transitionend', function(e){
+g.enableNativeEvent('transitionend', 'webkitTransitionEnd');
+gElemPages.transitionend(function(e){
   toggleShake(isShake);
 });
 
