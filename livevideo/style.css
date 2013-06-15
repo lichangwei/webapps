@@ -1,0 +1,116 @@
+html, body, ol, li{
+  margin: 0;
+  padding: 0;
+}
+html, body, ol, li{
+  height: 100%;
+}
+body{
+  position: relative;
+  overflow: hidden;
+  background: black;
+  cursor: none;
+  -webkit-transform: translateZ(0);
+}
+ol{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  list-style: none;
+  font-size: 0;
+  white-space: nowrap;
+  -webkit-transition: opacity 0.5s linear;
+}
+
+video{
+  width: 100%;
+  height: 100%;
+}
+
+li{
+  position: relative;
+  width: 14.33%;
+  height: 100%;
+  display: inline-block;
+  overflow: hidden;
+  -webkit-transition: width 0.5s linear;
+}
+
+ol li .image{
+  height: 100%;
+  background-position: center center;
+  background-repeat:  no-repeat;
+  background-size: cover;
+  opacity: 1;
+  -webkit-transition: opacity 0.5s linear;
+}
+ol li:nth-child(1) .image{
+  background-image: url(http://farm9.staticflickr.com/8171/8027606971_7bc7edb437_b.jpg);
+}
+ol li:nth-child(2) .image{
+  background-image: url(http://farm9.staticflickr.com/8465/8079198551_48f29d2544_b.jpg);
+}
+ol li:nth-child(3) .image{
+  background-image: url(http://farm8.staticflickr.com/7116/7630076516_769b268839_b.jpg);
+}
+ol li:nth-child(4) .image{
+  background-image: url(http://farm9.staticflickr.com/8306/7860325288_50f2efa276_b.jpg);
+}
+ol li:nth-child(5) .image{
+  background-image: url(http://farm8.staticflickr.com/7252/7428117274_60f405f905_b.jpg);
+}
+ol li:nth-child(6) .image{
+  background-image: url(http://farm9.staticflickr.com/8319/8063317644_cf02f3feab_b.jpg);
+}
+ol li:nth-child(7) .image{
+  background-image: url(http://farm9.staticflickr.com/8312/8033212134_6239aaa5af_b.jpg);
+}
+ol li.video .image{
+  opacity: 0;
+}
+
+li .title{
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  height: 50px;
+  bottom: 0;
+  font-size: 20px;
+  font-weight: bolder;
+  font-family: arial;
+  color: #FFF;
+  text-align: center;
+}
+ol li:nth-child(1) .title{
+  background: rgba(255, 0, 0, 0.5);
+}
+ol li:nth-child(2) .title{
+  background: rgba(0, 255, 0, 0.5);
+}
+ol li:nth-child(3) .title{
+  background: rgba(0, 0, 255, 0.5);
+}
+ol li:nth-child(4) .title{
+  background: rgba(255, 255, 0, 0.5);
+}
+ol li:nth-child(5) .title{
+  background: rgba(255, 0, 255, 0.5);
+}
+ol li:nth-child(6) .title{
+  background: rgba(0, 255, 255, 0.5);
+}
+ol li:nth-child(7) .title{
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.light{
+  position: absolute;
+  top: -200px;
+  left: -200px;
+  width: 150px;
+  height: 150px;
+  background: -webkit-radial-gradient(50% 50%, circle contain, rgba(255, 255, 255, 1.0), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
