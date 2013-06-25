@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>Photo Wall</title>
+  <style rel="stylesheet">
+    html{
+      height: 100%;
+      background: #E2E2E2;
+    }
+    body{
+      height: 100%;
+      margin: 0;
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          user-select: none;
+    }
+    #content{
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+    }
+    #content img{
+      position: absolute;
+      top: 100%;
+      left: 100%;
+      border: 5px solid white;
+      border-radius: 5px;
+      vertical-align: middle;
+      -webkit-transition: top .3s linear, left .3s linear, width .3s linear, height .3s linear;
+           -o-transition: top .3s linear, left .3s linear, width .3s linear, height .3s linear;  
+              transition: top .3s linear, left .3s linear, width .3s linear, height .3s linear; 
+    }
+    #mask{
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.5);
+      display: none;
+    }
+    #mask canvas{
+      position: relative;
+      background: #FFF;
+      border: 10px solid #FFF;
+      border-bottom: 20px solid #FFF;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="content"></div>
+  <div id="mask"></div>
+  <script src="../common/scripts/gesture.min.js"></script>
+  <script src="../common/scripts/console-enabled-webworker.js"></script>
+  <script src="scripts/photowall.js"></script>
+</body>
+</html>
