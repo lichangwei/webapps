@@ -3,12 +3,6 @@
 
 'use strict';
 
-window.photowall = {
-  add: add,
-  remove: remove,
-  swap: swap
-};
-
 var images  = [];
 var _images = [];
 var positions;
@@ -22,16 +16,20 @@ g(document).on('touchstart touchmove touchend', function(e){
   e.preventDefault();
 });
 
-g('#content').on('doubletap', 'img', function(e){
+g('#content').on('tap', 'img', function(e){
   e.stopImmediatePropagation();
   showImgInCanvas( this );
-}).on('drag', 'img', function(){
-  console.log('drag');
-}).on('drop', 'img', function(){
-  console.log('drop');
+}).on('dragstart', 'img', function(e){
+  e.dataTransfer.setData('dragElem', this);
+}).on('drop', 'img', function(e){
+  var dragElem = e.dataTransfer.getData('dragElem');
+  var dragIndex = parseInt(dragElem.getAttribute('title'), 10);
+  var dropIndex = parseInt(this.getAttribute('title'), 10);
+  swapPhoto(dragIndex, dropIndex);
 }).doubletap(function(e){
   e.stopPropagation();
-  photowall.add( '../common/images/' + Math.floor(Math.random()*6 + 1) + '.jpg' );
+  var url = '../common/images/' + Math.floor(Math.random()*6 + 1) + '.jpg';
+  addPhoto(url);
 });
 
 // start worker
@@ -45,29 +43,21 @@ worker.onmessage = function(event){
   content.style.display = 'block';
 };
 
-function add( src ){
+function addPhoto(src){
   var img = new Image();
   img.onload = onImageLoaded;
   img.src = src;
 }
   
-function remove( index ){
+function removePhoto(index){
   index = index || 0;
-  if(typeof index === 'string'){
-    for(var i = 0; i < images.length; i++){
-      if(images[i].src === index){
-        index = i;
-      }
-    }
-  }
   var image = images[index];
-  content.removeChild( image );
+  content.removeChild(image);
   images.splice(index, 1);
   _images.splice(index, 1);
-  positionImages();
 }
   
-function swap(i, j){
+function swapPhoto(i, j){
   var temp = images[i];
   images[i] = images[j];
   images[j] = temp;
@@ -105,7 +95,7 @@ function onImageLoaded(){
   });
   content.appendChild( img );
   if(images.length > 40){
-    photowall.remove();
+    removePhoto();
   }
   positionImages();
 }
@@ -117,18 +107,7 @@ function positionImages(){
   });
 }
 
-function ontouchend(e, thisX, thisY, offsetX, offsetY, endX, endY){
-  for(var i = 0; i < positions.length; i++){
-    var p = positions[i];
-    if(endX >= p.left && endY >= p.top && endX <= p.left+p.width && endY <= p.top+p.height){
-      photowall.swap(parseInt(this.title), i);
-      break;
-    }
-  }
-  return false;
-}
-
-function position( image, position, index ){
+function position(image, position, index){
   var rotate = Math.random() * 6 - 3;
   var cssText  = 'top: ' + position.top + 'px; left: ' + position.left + 'px;';
     cssText += '-webkit-transform: rotate(' + rotate + 'deg);';
@@ -136,26 +115,22 @@ function position( image, position, index ){
   image.title = index;
   image.width = position.width;
   image.height = position.height;
+  image.setAttribute('drag', 'copy');
+  image.setAttribute('dropable', 'true');
   image.style.cssText = cssText;
 }
 
 var mask = document.getElementById('mask');
-var canvas = document.getElementById('canvas');
 
 function showImgInCanvas( img ){
   var size = _images[parseInt(img.title)];
   var wh = fit(size.width, size.height, width*0.8, height*0.8);
-  var w = parseInt(wh[0]);
-  var h = parseInt(wh[1]);
-  var top = parseInt( (height - h)/2 );
-  var left = parseInt( (width - w)/2 );
+  var w = parseInt(wh[0], 10);
+  var h = parseInt(wh[1], 10);
+  var top = parseInt( (height - h)/2, 10 );
+  var left = parseInt( (width - w)/2, 10 );
   var canvas = document.createElement('canvas');
-  var cssText = stylesheet.composeDeclares({
-    'width': w,
-    'height': h,
-    'top': top,
-    'left': left
-  });
+  var cssText = 'width:' + w + 'px; height:' + h + 'px; top:' + top + 'px; left:' + left + 'px';
   canvas.width = w;
   canvas.height = h;
   canvas.style.cssText = cssText;
@@ -164,9 +139,9 @@ function showImgInCanvas( img ){
   mask.style.display = 'block';
 }
 
-function fit(w, h, W, H){
-  var ratio = Math.min(W/w, H/h);
-  return [w*ratio, h*ratio];
+function fit(sourceWith, sourceHeight, targetWidth, targetHeight){
+  var ratio = Math.min(targetWidth/sourceWith, targetHeight/sourceHeight);
+  return [sourceWith * ratio, sourceHeight * ratio];
 }
   
 })();
