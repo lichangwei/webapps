@@ -27,26 +27,33 @@
       left: 100%;
       border: 5px solid white;
       border-radius: 5px;
-      vertical-align: middle;
       -webkit-transition: top .3s linear, left .3s linear, width .3s linear, height .3s linear;
-           -o-transition: top .3s linear, left .3s linear, width .3s linear, height .3s linear;  
-              transition: top .3s linear, left .3s linear, width .3s linear, height .3s linear; 
+           -o-transition: top .3s linear, left .3s linear, width .3s linear, height .3s linear;
+              transition: top .3s linear, left .3s linear, width .3s linear, height .3s linear;
+    }
+    #content img.hidden{
+      display: none;
     }
     #mask{
       position: absolute;
-      left: 0;
       top: 0;
-      height: 100%;
+      height: 0;
       width: 100%;
+      height: 100%;
+      text-align: center;
       background: rgba(255, 255, 255, 0.5);
       display: none;
     }
-    #mask canvas{
-      position: relative;
-      background: #FFF;
+    #mask img{
+      position: absolute;
       border: 10px solid #FFF;
       border-bottom: 20px solid #FFF;
       border-radius: 5px;
+    }
+    #mask img.animate{
+      -webkit-transition: top .5s linear, left .5s linear, width .5s linear, height .5s linear;
+           -o-transition: top .5s linear, left .5s linear, width .5s linear, height .5s linear;
+              transition: top .5s linear, left .5s linear, width .5s linear, height .5s linear;
     }
   </style>
 </head>

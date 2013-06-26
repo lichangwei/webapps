@@ -7,18 +7,23 @@ var images  = [];
 var _images = [];
 var positions;
 var content = document.getElementById('content');
+var mask = document.getElementById('mask');
 var height  = content.clientHeight;
 var width   = content.clientWidth;
 var margin  = 10;
+var hiddenImage;
+var clonedImage;
+
+g.enableNativeEvent('transitionend', 'webkitTransitionEnd');
 
 // bind events
 g(document).on('touchstart touchmove touchend', function(e){
   e.preventDefault();
 });
 
-g('#content').on('tap', 'img', function(e){
+g('#content').on('doubletap', 'img', function(e){
   e.stopImmediatePropagation();
-  showImgInCanvas( this );
+  showBigImage(this);
 }).on('dragstart', 'img', function(e){
   e.dataTransfer.setData('dragElem', this);
 }).on('drop', 'img', function(e){
@@ -26,10 +31,20 @@ g('#content').on('tap', 'img', function(e){
   var dragIndex = parseInt(dragElem.getAttribute('title'), 10);
   var dropIndex = parseInt(this.getAttribute('title'), 10);
   swapPhoto(dragIndex, dropIndex);
-}).doubletap(function(e){
+}).taphold(function(e){
   e.stopPropagation();
   var url = '../common/images/' + Math.floor(Math.random()*6 + 1) + '.jpg';
   addPhoto(url);
+});
+g('#mask').on('doubletap', function(e){
+  if(!clonedImage) return;
+  clonedImage.style.cssText = hiddenImage.style.cssText;
+  clonedImage = null;
+  g('#mask img').on('transitionend', function(){
+    hiddenImage.className = '';
+    mask.style.display = 'none';
+    mask.innerHTML = '';
+  });
 });
 
 // start worker
@@ -45,7 +60,21 @@ worker.onmessage = function(event){
 
 function addPhoto(src){
   var img = new Image();
-  img.onload = onImageLoaded;
+  img.onload = function(){
+    var img = this;
+    images.push(img);
+    _images.push({
+      margin: margin,
+      width: img.width,
+      height: img.height,
+      area: (img.width+margin) * (img.height+margin)
+    });
+    content.appendChild(img);
+    if(images.length > 40){
+      removePhoto();
+    }
+    positionImages();
+  };
   img.src = src;
 }
   
@@ -84,22 +113,6 @@ function swapPhoto(i, j){
   position( images[j], positions[j], j );
 }
 
-function onImageLoaded(){
-  var img = this;
-  images.push(img);
-  _images.push({
-    margin: margin,
-    width: img.width,
-    height: img.height,
-    area: (img.width+margin) * (img.height+margin)
-  });
-  content.appendChild( img );
-  if(images.length > 40){
-    removePhoto();
-  }
-  positionImages();
-}
-
 function positionImages(){
   worker.postMessage({
     images: _images,
@@ -120,23 +133,24 @@ function position(image, position, index){
   image.style.cssText = cssText;
 }
 
-var mask = document.getElementById('mask');
-
-function showImgInCanvas( img ){
-  var size = _images[parseInt(img.title)];
+function showBigImage(img){
+  hiddenImage = img;
+  clonedImage = img.cloneNode();
+  mask.appendChild(clonedImage);
+  mask.style.display = 'block';
+  var size = _images[parseInt(img.title, 10)];
   var wh = fit(size.width, size.height, width*0.8, height*0.8);
   var w = parseInt(wh[0], 10);
   var h = parseInt(wh[1], 10);
-  var top = parseInt( (height - h)/2, 10 );
-  var left = parseInt( (width - w)/2, 10 );
-  var canvas = document.createElement('canvas');
-  var cssText = 'width:' + w + 'px; height:' + h + 'px; top:' + top + 'px; left:' + left + 'px';
-  canvas.width = w;
-  canvas.height = h;
-  canvas.style.cssText = cssText;
-  canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-  mask.appendChild(canvas);
-  mask.style.display = 'block';
+  var top = (height - h) / 2;
+  var left = (width - w) / 2;
+  var cssText = 'width:' + w + 'px; height:' + h + 'px;' + 
+    'top:' + top + 'px; left:' + left + 'px';
+  clonedImage.className = 'animate';
+  hiddenImage.className = 'hidden';
+  setTimeout(function(){
+    clonedImage.style.cssText = cssText;
+  }, 100);
 }
 
 function fit(sourceWith, sourceHeight, targetWidth, targetHeight){

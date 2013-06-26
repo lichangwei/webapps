@@ -18,7 +18,6 @@ function init( data ){
  * @param images Array [{width, height, area}]
  */
 positionImages = function ( data ){
-  var data = data;
   if( !inited ) init( data );
   
   var images = data.images;
@@ -30,14 +29,14 @@ positionImages = function ( data ){
   }
   var ratio = Math.sqrt( (xPx*yPx)/area/1.8 );
   ratio = Math.min(ratio, 1);
-  console.info(ratio)
+  console.info(ratio);
   var positions = [];
-  for(var i = 0, len = images.length; i < len; i++){
+  for(i = 0, len = images.length; i < len; i++){
     positionImage(array, positions, starts, ratio, images[i], i);
   }
   tryMoveCenter(positions, yPx, xPx);
   return positions;
-}
+};
 
 function positionImage(array, positions, starts, ratio, image, index){
   starts.sort(function(a, b){
@@ -103,7 +102,7 @@ function isAvaiable(array, sx, sy, ex, ey, maxx, maxy){
   for(var i = sx; i <= ex; i++){
     if( array[sy][i] >= 0 || array[ey][i] >= 0) return false;
   }
-  for(var i = sy; i <= ey; i++){
+  for(i = sy; i <= ey; i++){
     if( array[i][sx] >= 0 || array[i][ex] >= 0) return false;
   }
   return true;
@@ -163,8 +162,8 @@ function tryMoveCenter(positions, yPx, xPx){
   var bottom = Math.max.apply(Math, bottoms);
   var offsetX = Math.round( (xPx - right)/2 );
   var offsetY = Math.round( (yPx - bottom)/2 );
-  console.info('offsetX=' + offsetX)
-  console.info('offsetY=' + offsetY)
+  console.info('offsetX=' + offsetX);
+  console.info('offsetY=' + offsetY);
   for(var i = 0, len = positions.length; i < len; i++){
     var pos = positions[i];
     pos.left += offsetX;
