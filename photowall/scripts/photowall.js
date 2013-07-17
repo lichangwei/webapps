@@ -14,7 +14,7 @@ var margin  = 10;
 var hiddenImage;
 var clonedImage;
 
-g.enableNativeEvent('transitionend', 'webkitTransitionEnd');
+g.enableNativeEvents('transitionend webkitTransitionEnd');
 
 // bind events
 g(document).on('touchstart touchmove touchend', function(e){

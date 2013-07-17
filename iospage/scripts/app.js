@@ -210,7 +210,7 @@ function gotoPage(pageIndex){
     toggleShake(false);
   }
 }
-g.enableNativeEvent('transitionend', 'webkitTransitionEnd');
+g.enableNativeEvents('transitionend webkitTransitionEnd');
 gElemPages.transitionend(function(e){
   toggleShake(isShake);
 });
