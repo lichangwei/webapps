@@ -23,6 +23,7 @@ html, body, #container, #pages, #pages li{
 .transition{
   -webkit-transition: left 0.3s linear;
           transition: left 0.3s linear;
+  -webkit-transform: translate3d(0, 0, 0);
 }
 #pages{
   position: relative;
@@ -74,6 +75,7 @@ html, body, #container, #pages, #pages li{
 }
 .shake .item{
   -webkit-animation: shake 0.3s linear 0s infinite;
+  -webkit-transform: translate3d(0, 0, 0);
 }
 .shake .icon:before{
   position: absolute;
