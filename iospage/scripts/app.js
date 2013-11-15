@@ -159,8 +159,8 @@ function bindDragAndDropEvent(){
       }
     }
   }).on('dragend.dd', '.icon', function(e){
+    isDrag = false;
     toggleShake(isShake);
-    // do nothing
   }).on('dragenter.dd', '.icon', function(e){
     // do nothing
   }).on('dragover.dd', '.icon', function(e){
@@ -181,7 +181,6 @@ function bindDragAndDropEvent(){
       dragElem.setAttribute('appindex', dropIndex);
       dropElem.setAttribute('appindex', dragIndex);
     }
-    isDrag = false;
   });
 }
 
