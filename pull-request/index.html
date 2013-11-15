@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pull Request</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="./main.css"></link>
+</head>
+<body>
+  <div class="viewport">
+    <div class="container">
+      <div class="header"></div>
+      <div class="tips"></div>
+      <div class="content"></div>
+    </div>
+  </div>
+  <script src="../common/scripts/gesture.min.js"></script>
+  <script>
+    var content = document.querySelector('.content');
+    var tips = document.querySelector('.tips');
+    content.style.height = document.documentElement.clientHeight - 50 + 'px';
+    var timeout = null;
+    g(content).swipestart(function(e){
+      // do nothing
+    }).swipe(function(e){
+      tips.style.height = e.deltaY + 'px';
+      tips.innerHTML = e.deltaY > 50 ? 'Release to Request.' : 'Pull to Request.';
+    }).swipeend(function(e){
+      tips.style.height = '30px';
+      tips.innerHTML = 'loading';
+      clearTimeout(timeout);
+      timeout = setTimeout(function(){
+        content.innerHTML += 'loaded<br/>';
+        tips.style.height = '0px';
+        tips.innerHTML = '';
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
