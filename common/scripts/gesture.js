@@ -173,7 +173,7 @@ g.unregister = function(type){
 /*
  * @method g.enableNativeEvents
  * @desc allow using native events just like tap etc.
- * @param {string} types required.
+ * @param {string...} types required.
  * @return g class
  * @sample g.enableNativeEvents('touchstart mousedown', 'click');
  *   After above code was executed, you can listen touchstart and mousedown event by using code `g().touchstart()`,
@@ -247,8 +247,8 @@ function register(type, ifBind){
     for(var i = 0; i < this.elems.length; i++){
       var elem = this.elems[i];
       ifBind && ifBind.call(elem, type);
-      // bind native events
-      var types = aliases[type];
+      // bind it as a native event
+      var types = aliases[type] || [type];
       for(var j = 0; types && j < types.length; j++){
         elem.addEventListener(types[j], cb, false);
       }
